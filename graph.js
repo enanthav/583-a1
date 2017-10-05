@@ -20,18 +20,18 @@ var svg = d3.select("body").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.tsv("incidence_2000-2013.tsv", function(error, data) {
+d3.tsv("incidence.tsv", function(error, data) {
     if (error) throw error;
     // Coerce the data to numbers.
     data.forEach(function(d) {
-        d.inc_rate = +d.inc_rate;
-        d.year = +d.year;
-        d.count = +d.count;
+        d.inc_rate = +d["Age-Adjusted Rate"];
+        d.year = +d.Year;
+        d.count = +d.Count;
     });
     // Group data by cancer
     var dataGroup = d3.nest()
         .key(function(d) {
-            return d.leading_cancer_site;
+            return d["Leading Cancer Sites"];
         })
         .entries(data);
 
@@ -39,17 +39,45 @@ d3.tsv("incidence_2000-2013.tsv", function(error, data) {
         console.log(dataGroup[i]);
     });
 
+
     // Compute the scales’ domains.
     x.domain([d3.min(data, function(d){ return d.year; }), d3.max(data, function(d){ return d.year; })]);
     y.domain([0, d3.max(data, function(d){
         //console.log(d.inc_rate);
         return d.inc_rate; })]);
 
+    legendSpace = width/dataGroup.length;
+    var color = d3.scale.category20();
+
     dataGroup.forEach(function(d, i) {
-        console.log(d.values);
+        console.log(d.values[i]);
         svg.append("path")
             .attr("class", "line")
+            .style("stroke", function() {
+                return d.color = color(d.key); })
+            .attr("id", 'tag'+d.key.replace(/\s+/g, '')) // assign ID **
             .attr("d", incidenceLine(d.values));
+
+
+        // Add the Legend
+        svg.append("text")                                    // *******
+            .attr("x", (legendSpace/2)+i*legendSpace) // spacing // ****
+            .attr("y", height + (margin.bottom/2)+ 5)         // *******
+            .attr("class", "legend")    // style the legend   // *******
+            .style("fill", function() { // dynamic colours    // *******
+                return d.color = color(d.key); })             // *******
+            .on("click", function(){                     // ************
+                // Determine if current line is visible
+                var active   = d.active ? false : true,  // ************
+                    newOpacity = active ? 0 : 1;             // ************
+                // Hide or show the elements based on the ID
+                d3.select("#tag"+d.key.replace(/\s+/g, '')) // *********
+                    .transition().duration(100)          // ************
+                    .style("opacity", newOpacity);       // ************
+                // Update whether or not the elements are active
+                d.active = active;                       // ************
+            })                                       // ************
+            .text(d.key);
     });
 
 /*    // Add the X Axis
