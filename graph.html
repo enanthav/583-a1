@@ -8,6 +8,7 @@
 
     h1 {
         font: 15px sans-serif;
+        text-align:center;
     }
 
     path {
@@ -16,11 +17,29 @@
         fill: none;
     }
 
+    #graph {
+        height: 450px;
+        margin: 0 auto;
+        position: relative;
+        width: 960px;
+    }
+
+    #option{
+
+    }
     .legend {
         font-size: 10px;
         text-anchor: middle;
     }
 
+    rect {
+        cursor: pointer;                           /* NEW */
+        stroke-width: 2;
+    }
+
+    rect.disabled {                              /* NEW */
+        fill: transparent !important;              /* NEW */
+    }
     .axis path,
     .axis line {
         fill: none;
@@ -37,11 +56,19 @@
 </style>
 <body>
 <h1>Incidence Rate of Top Ten Cancers from 2000-2013</h1>
-<div id="option">
-    <input name="updateButton"
-           type="button"
-           value="Update"
-           onclick="updateData()" />
+
+
+<div id="graph">
+    <div id="option">
+        <input name="updateButton"
+               type="button"
+               value="Update"
+               onclick="updateData()" />
+        <input name="revertButton"
+               type="button"
+               value="Revert"
+               onclick="revertData()" />
+    </div>
 </div>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script src="graph.js" type='text/javascript'></script>
