@@ -238,7 +238,7 @@ d3.tsv("mortality_10.tsv", function(error, data) {
 
         svg2.append("text")
             .attr("x", (legendSpace2/2) + (i*legendSpace2))
-            .attr("y", height + (margin.bottom/2)+ 13)
+            .attr("y", height + (margin.bottom/2)+ 14)
             .text(d.key);
     });
 

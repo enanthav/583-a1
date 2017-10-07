@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="graph.css">
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+$(document).ready(function(){
+    $("#inc").click(function(){
+		$("#graph").toggle();
+        $("#mortalityGraph").toggle();
+        $( "#chartTitle" ).text("Age-Adjusted Mortality Rate of Top Ten Cancers from 2000-2013");
+    });
+});
+
+$(document).ready(function(){
+    $("#mort").click(function(){
+		$("#graph").toggle();
+        $("#mortalityGraph").toggle();
+        $( "#chartTitle" ).text("Age-Adjusted Incidence Rate of Top Ten Cancers from 2000-2013");
+    });
+});
+</script>
+<head>
+<title>CPSC 583: Assignment 1</title>
+</head>
+<body>
+<div id="container">
+	<h1 id="chartTitle">Age-Adjusted Incidence Rate of Top Ten Cancers from 2000-2013</h1>
+	Age-adjusted incidence and mortality rates per 100,000 people of ten of the most common cancers from 2000-2013 in the United States. The data was obtained from the <a href="https://wonder.cdc.gov/cancer.html" target="_blank">Centers for Disease Control and Prevention</a>.
+	The incidence and mortality rates use the U.S. 2000 standard population.<br>
+	<div id="graph">
+
+			<div id="option1">
+				<button id="mort">View Mortality Rate</button>
+			</div>
+	</div>
+
+	<div id="mortalityGraph" style="display: none;">
+		<div id="option2">
+			<button id="inc">View Incidence Rate</button>
+		</div>
+	</div>
+</div>
+
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script src="graph.js" type='text/javascript'></script>
+</body>
+</html>
